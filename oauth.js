@@ -17,9 +17,9 @@ window.onload = function () {
       )
       .then((response) => response.json())
       .then(function(data) {
-        // chrome.runtime.sendMessage({
-
-        // })
+        chrome.runtime.sendMessage({
+          items: data.items
+        })
         console.log({ data })
       })
     })
