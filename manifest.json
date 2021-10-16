@@ -1,0 +1,17 @@
+{
+  "name": "Schedule Text Builder",
+  "description": "Schedule Text Builder",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "Scheduler"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "oauth2": {
+    "client_id": "",
+    "scopes": ["https://www.googleapis.com/auth/calendar.readonly"]
+  },
+  "permissions": ["identity"]
+}
