@@ -1,6 +1,7 @@
 window.onload = function () {
   document.querySelector('button').addEventListener('click', function() {
     chrome.identity.getAuthToken({interactive: true}, function(token) {
+      const today = new Date()
 
       let init = {
         method: 'GET',
@@ -12,18 +13,22 @@ window.onload = function () {
         'contentType': 'json'
       }
       fetch(
-        'https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=2021-10-01T10:00:00-07:00&showDeleted=false',
+        `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${today.toISOString()}`,
         init
       )
       .then((response) => response.json())
       .then(function(data) {
-        let calendarDiv = document.querySelector("#calendarDiv")
+        let calendarDiv = document.querySelector('#calendarDiv')
 
         data.items.forEach((item) => {
           if (item.status !== 'cancelled') {
-            let calendar = document.createElement("p")
-            calendar.innerHTML = `${item.summary}: ${item.start.dateTime} ~ ${item.end.dateTime}`
+            let calendar = document.createElement('p')
+            let startDate = new Date(item.start.dateTime).toLocaleString({ timeZone: 'Asia/Tokyo' })
+            let endDate = new Date(item.end.dateTime).toLocaleString({ timeZone: 'Asia/Tokyo' })
+            calendar.innerHTML = `${item.summary}: ${startDate} ~ ${endDate}`
             calendarDiv.appendChild(calendar)
+
+            
           }
         })
       })
