@@ -12,15 +12,20 @@ window.onload = function () {
         'contentType': 'json'
       }
       fetch(
-        'https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=2021-10-01T10:00:00-07:00',
+        'https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=2021-10-01T10:00:00-07:00&showDeleted=false',
         init
       )
       .then((response) => response.json())
       .then(function(data) {
-        chrome.runtime.sendMessage({
-          items: data.items
+        let calendarDiv = document.querySelector("#calendarDiv")
+
+        data.items.forEach((item) => {
+          if (item.status !== 'cancelled') {
+            let calendar = document.createElement("p")
+            calendar.innerHTML = `${item.summary}: ${item.start.dateTime} ~ ${item.end.dateTime}`
+            calendarDiv.appendChild(calendar)
+          }
         })
-        console.log({ data })
       })
     })
   })
